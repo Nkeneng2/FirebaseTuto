@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {
     Button,
@@ -8,7 +8,8 @@ import {
     Modal,
     TextInput,
 } from '../ui';
-import { ResetPasswordForm } from './ResetPasswordForm';
+import {ResetPasswordForm} from './ResetPasswordForm';
+import {signIn} from "./signIn";
 
 const Form = styled.div`
     width: 350px;
@@ -31,7 +32,7 @@ const CreateAccountButton = styled(FullWidthButton)`
     margin-top: -64px;
 `;
 
-const withTopMargin = px => ({ marginTop: `${px}px` });
+const withTopMargin = px => ({marginTop: `${px}px`});
 
 /*
     This component contains the contents that are shown
@@ -46,7 +47,12 @@ export const SignInForm = () => {
     const history = useHistory();
 
     const onSignInClicked = async () => {
-        // Firebase code goes here
+        try {
+            await signIn(emailValue, passwordValue)
+            history.push('/')
+        } catch (e) {
+            setErrorMessage(e.message)
+        }
     }
 
     const onSignInWithGoogleClicked = async () => {
@@ -67,14 +73,14 @@ export const SignInForm = () => {
                 name='email'
                 value={emailValue}
                 placeholder='someone@gmail.com'
-                onChange={e => setEmailValue(e.target.value)} />
+                onChange={e => setEmailValue(e.target.value)}/>
             <FullWidthTextInput
                 name='password'
                 type='password'
                 value={passwordValue}
                 placeholder='Password'
                 style={withTopMargin(8)}
-                onChange={e => setPasswordValue(e.target.value)} />
+                onChange={e => setPasswordValue(e.target.value)}/>
             <FullWidthButton
                 type='transparent'
                 style={withTopMargin(8)}
@@ -97,7 +103,7 @@ export const SignInForm = () => {
                 isOpen={showModal}
                 onRequestClose={() => setShowModal(false)}
             >
-                <ResetPasswordForm onClose={() => setShowModal(false)} />
+                <ResetPasswordForm onClose={() => setShowModal(false)}/>
             </Modal>
         </Form>
     );

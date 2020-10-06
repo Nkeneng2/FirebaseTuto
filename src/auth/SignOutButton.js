@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '../ui';
+import {Button} from '../ui';
+import {SignOut} from "./SignOut";
 
 export const StyledButton = styled(Button)`
     background-color: #ed0d25;
@@ -12,13 +13,18 @@ export const StyledButton = styled(Button)`
 */
 export const SignOutButton = () => {
     const onClickSignOut = async () => {
-        // Firebase code goes here
+        try {
+            await SignOut()
+        }catch (e) {
+            alert(e.message())
+        }
+
     }
 
     return (
         <StyledButton
             onClick={onClickSignOut}
-            style={{ float: 'right' }}
+            style={{float: 'right'}}
         >Sign Out</StyledButton>
     );
 }
